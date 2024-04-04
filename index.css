@@ -1,3 +1,7 @@
+.lamarinamx-marina-components-0-x-containerLayout--pdp-images__container {
+    position: relative;
+}
+
 .deployMundi {
     position: absolute;
     width: 36%;
@@ -9,8 +13,8 @@
     width: max-content;
     height: max-content;
     right: 0%;
-    top:0%;
-    z-index:10;
+    top: 0%;
+    z-index: 10;
 }
 
 .btnMudi3D {
@@ -29,7 +33,6 @@
 }
 
 .tooltipMudi {
-    background-color: #03457c;
     color: white;
     font-family: sans-serif;
     width: 360px;
@@ -41,17 +44,6 @@
     top: -70%;
     right: 0%;
     filter: drop-shadow(3px 5px 5px rgba(10, 10, 10, 0.196));
-}
-
-.tooltipMudi::after {
-    content: "_";
-    position: absolute;
-    bottom: -15%;
-    right: 10%;
-    width: 10px;
-    border-bottom-right-radius: 50px;
-    background-color: #03457c;
-    color: transparent;
 }
 
 /* estilos del modal */
@@ -190,8 +182,8 @@
     width: 30px;
 }
 
-.hrTitle{
-    margin-botton:20px
+.hrTitle {
+    margin-botton: 20px
 }
 
 @media screen and (min-width:1400px) and (max-width:1700px) {

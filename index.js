@@ -6,6 +6,10 @@ class MudiExperience{
         this.dataSever          = null;
         this.skuNumber          = null;
         this.fatherContainer    = null;
+        this.categories         = null;
+
+        this.addToCar           = null;
+        this.buyItem            = null;
     };
 
     /** Conect mudiServer  ✔️ */
@@ -43,7 +47,7 @@ class MudiExperience{
         link = document.createElement('LINK');
         link.setAttribute('rel','stylesheet');
         link.id="stylesMudiGeneral";
-        link.href=`./index.css`; /* custom this path */
+        link.href=`https://cdn.jsdelivr.net/gh/RodriguezJose92/bodesa@latest/index.css`; /* custom this path */
        
         document.head.appendChild(link)
     };
@@ -241,14 +245,16 @@ class MudiExperience{
 
     /** create tooltip ✔️ */
     createTooltip(){
+
         const 
         tooltip = document.createElement('P');
         tooltip.classList.add('tooltipMudi');
+        tooltip.setAttribute("style",`background-color:${this.color}`)
         tooltip.innerHTML=`<b>¡Nuevo!</b> Descubre como se ve este producto en 3D y realidad aumentada en tu espacio`;
 
         setTimeout(()=>{
             document.body.querySelector('.tooltipMudi').remove();
-        },9000)
+        },9000);
 
         return tooltip;
     };
@@ -262,71 +268,100 @@ class MudiExperience{
         else if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad')) OSdevice = "IOS";
         else OSdevice = 'DESK';
 
-        window.dataLayer && dataLayer.push({
-            event: `Evento de interaccion ${eventName}`,
-            valorMudi: 1,
-            sku: this.skuNumber,
-            category:document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML || 'null',
-            subCategory: document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML || ' null',
+        dataLayer.push({
+            event           : `Evento de interaccion ${eventName}`,
+            valorMudi       : 1,
+            sku             : this.skuNumber,
+            category        : window.location.hostname.includes('marina') 
+                                    ? this.categories[this.categories.length -3 ].innerText ?? 'null'
+                                    : this.categories[this.categories.length -1 ].innerText ?? 'null',
+            subCategory     : window.location.hostname.includes('marina') 
+                                ? this.categories[this.categories.length -4 ].innerText ?? 'null'
+                                : this.categories[this.categories.length -2 ].innerText ?? 'null',
             sistemaOperativo: OSdevice
-        })
+        });
+
     };
+
+    /** Verificación del DOM  ✔️*/
+    veryfyDOM(){
+        if( this.fatherContainer )  return true
+        else                        return false;
+    };
+
+    /** request Animation  ✔️ */
+    animationRequest(){ this.experienceOn(this.skuNumber)};
 
     /** verifyExperience  ✔️ */
     async experienceOn(skuNumber){
 
+        // Guardamos el  SKU
+        this.skuNumber = skuNumber;
+
         //** Asignamos el color y contenedor padre */
-        if(this.color === null && this.fatherContainer == null){
+        if(this.color === null || this.fatherContainer == null){
             switch( window.location.hostname ){
+
                 case "www.elbodegon.com.mx":
-                    this.color = "#db0b14";
-                    this.fatherContainer = document.body.querySelector('.product-page-images')
+                    this.color                  = "#db0b14";
+                    this.fatherContainer        = document.body.querySelector('.product-page-images');
+                    this.categories             = document.body.querySelectorAll('[itemprop="name"]') || null;
+                    this.addToCar               = null
                     break;
+
                 case "www.lamarina.com.mx":
-                    this.color = "#006239";
-                    this.fatherContainer = document.body.querySelector('.swiper-container')
-                    break
+                    this.color                  = "#006239";
+                    this.fatherContainer        = document.body.querySelector('.lamarinamx-marina-components-0-x-containerLayout--pdp-images__container')
+                    this.categories             = document.body.querySelector("[data-testid='breadcrumb']").childNodes || null;
+                    this.addToCar               = document.body.querySelector('.vtex-add-to-cart-button-0-x-buttonText').parentNode.parentNode.parentNode ?? null ;
+                    break;
+
+                case "127.0.0.1":
+                    this.color                  = "#db0b14";
+                    this.fatherContainer        = document.body.querySelector('#deployMudi')
+                    break;
+
             };
         };
 
-        /** Response Mudi server */
-        await this.conectServer(skuNumber);
+        /** Verificamos si el Dom está disponible */
+        if(this.veryfyDOM){
 
-        /** verify process */
-        if (!this.dataServer){
-            document.body.querySelector('.btnsMudiContainer') && document.body.querySelector('.btnsMudiContainer').remove();
-            console.warn(`El sku: ${skuNumber} no posee experiencias de 3D  y AR`)
-            return;
-        };
+            /** Response Mudi server */
+            await this.conectServer(skuNumber);
 
-        /** Create Styles */
-        this.createStyles();
+            /** verify process */
+            if (!this.dataServer){
+                document.body.querySelector('.btnsMudiContainer') && document.body.querySelector('.btnsMudiContainer').remove();
+                console.warn(`El sku: ${skuNumber} no posee experiencias de 3D  y AR`)
+                return;
+            };
 
-        /** Create Buttons */
-        this.createBtns();
+            /** Create Styles */
+            this.createStyles();
 
-        /** Enviamos el evento devisualización */
-        dataLayer.push({
-            event           : "visualizacion_botones",
-            valorMudi       : "1",
-            sku             : this.skuNumber,
-            category        : document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML || 'null',
-            subCategory     : document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML || 'null'
-        })
+            /** Create Buttons */
+            this.createBtns();
 
-        setTimeout(()=>{
+            /** Enviamos el evento devisualización */
+            this.categories && dataLayer.push({
+                event           : "visualizacion_botones",
+                valorMudi       : "1",
+                sku             : this.skuNumber,
+                category        : window.location.hostname.includes('marina') 
+                                    ? this.categories[this.categories.length -3 ].innerText ?? 'null'
+                                    : this.categories[this.categories.length -1 ].innerText ?? 'null',
+                subCategory     : window.location.hostname.includes('marina') 
+                                    ? this.categories[this.categories.length -4 ].innerText ?? 'null'
+                                    : this.categories[this.categories.length -2 ].innerText ?? 'null',
+            });
 
-            let addBtn = document.body.querySelector('.vtex-add-to-cart-button-0-x-buttonText').parentNode.parentNode.parentNode
-            addBtn.addEventListener('click',()=>{
-                this.sendEventInteraction('ADD TO CAR');
-            })
+        }
 
-            document.body.querySelector('.cart-add').addEventListener('click',()=>{
-                this.sendEventInteraction('ADD TO CAR');
-            })
-        },2000);
-        
-    };
+        /** Volvemos hacer la petición si es que el Dom aún no está listp */
+        else { requestAnimationFrame(this.animationRequest)}
+
+    }; 
 
 };
 
