@@ -368,4 +368,4 @@ class MudiExperience{
 const mudiExperience = new MudiExperience();
 setTimeout(()=>{
     mudiExperience.experienceOn(7701858963716)
-},5000)
+},10000)
