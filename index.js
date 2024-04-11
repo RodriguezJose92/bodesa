@@ -309,7 +309,7 @@ class MudiExperience{
                     this.addToCar               = null
                     break;
 
-                case "www.lamarina.com.mx":
+                case "mudi--lamarinamx.myvtex.com":
                     this.color                  = "#006239";
                     this.fatherContainer        = document.body.querySelector('.lamarinamx-marina-components-0-x-containerLayout--pdp-images__container')
                     this.categories             = document.body.querySelector("[data-testid='breadcrumb']").childNodes || null;
