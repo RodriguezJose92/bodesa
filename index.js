@@ -289,14 +289,16 @@ class MudiExperience{
         else                        return false;
     };
 
-    /** request Animation  ✔️ */
-    animationRequest(){ this.experienceOn(this.skuNumber)};
-
     /** verifyExperience  ✔️ */
-    async experienceOn(skuNumber){
+    async experienceOn(){
 
         // Guardamos el  SKU
-        this.skuNumber = skuNumber;
+        this.skuNumber = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML;
+
+        if(!this.skuNumber){
+            requestAnimationFrame(this.experienceOn.bind());
+            return;
+        };
 
         //** Asignamos el color y contenedor padre */
         if(this.color === null || this.fatherContainer == null){
@@ -359,13 +361,13 @@ class MudiExperience{
         }
 
         /** Volvemos hacer la petición si es que el Dom aún no está listp */
-        else { requestAnimationFrame(this.animationRequest)}
+        else { requestAnimationFrame(this.experienceOn.bind()) }
 
     }; 
 
 };
 
-const mudiExperience = new MudiExperience();
-setTimeout(()=>{
-    mudiExperience.experienceOn(7701858963716)
-},10000)
+const 
+mudiExperience = new MudiExperience();
+mudiExperience.experienceOn()
+
