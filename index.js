@@ -293,9 +293,10 @@ class MudiExperience{
     async experienceOn(){
 
         // Guardamos el  SKU
-        this.skuNumber = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML;
+        let mySku = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value');
 
-        if(!this.skuNumber){
+        if(!mySku){
+            this.skuNumber = mySku.innerHTML;
             requestAnimationFrame(this.experienceOn.bind());
             return;
         };
