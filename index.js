@@ -276,8 +276,8 @@ class MudiExperience{
                                     ? this.categories[this.categories.length -3 ].innerText ?? 'null'
                                     : this.categories[this.categories.length -1 ].innerText ?? 'null',
             subCategory     : window.location.hostname.includes('marina') 
-                                ? this.categories[this.categories.length -4 ].innerText ?? 'null'
-                                : this.categories[this.categories.length -2 ].innerText ?? 'null',
+                                    ? this.categories[this.categories.length -4 ].innerText ?? 'null'
+                                    : this.categories[this.categories.length -2 ].innerText ?? 'null',
             sistemaOperativo: OSdevice
         });
 
@@ -330,12 +330,12 @@ class MudiExperience{
         if(this.veryfyDOM){
 
             /** Response Mudi server */
-            await this.conectServer(skuNumber);
+            await this.conectServer(this.skuNumber);
 
             /** verify process */
             if (!this.dataServer){
                 document.body.querySelector('.btnsMudiContainer') && document.body.querySelector('.btnsMudiContainer').remove();
-                console.warn(`El sku: ${skuNumber} no posee experiencias de 3D  y AR`)
+                console.warn(`El sku: ${this.skuNumber} no posee experiencias de 3D  y AR`)
                 return;
             };
 
