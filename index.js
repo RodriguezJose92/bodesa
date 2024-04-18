@@ -371,7 +371,8 @@ class MudiExperience{
 const 
 mudiExperience = new MudiExperience();
 setTimeout(()=>{
-    mudiExperience.experienceOn()
+    mudiExperience.experienceOn();
+    console.log('Hemos iniciado la experiencia')
 },2000)
 
 
