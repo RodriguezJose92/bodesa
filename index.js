@@ -296,10 +296,12 @@ class MudiExperience{
         let mySku = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value');
 
         if(!mySku){
-            this.skuNumber = mySku.innerHTML;
             requestAnimationFrame(this.experienceOn.bind());
             return;
         };
+
+        /** Assign skuNumber */
+        this.skuNumber = mySku.innerHTML;
 
         //** Asignamos el color y contenedor padre */
         if(this.color === null || this.fatherContainer == null){
