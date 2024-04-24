@@ -615,7 +615,7 @@ class MudiExperience{
                 this.fatherContainer        = document.body.querySelector('.lamarinamx-marina-components-0-x-containerLayout--pdp-images__container');
                 this.category               = document.body.querySelector("[data-testid='breadcrumb']");
                 this.subCategory            = document.body.querySelector("[data-testid='breadcrumb']");
-                this.addToCar               = document.body.querySelector('.vtex-add-to-cart-button-0-x-buttonText').parentNode.parentNode.parentNode;
+                this.addToCar               = document.body.querySelector('.vtex-add-to-cart-button-0-x-buttonText');
                 break
             
             case "www.elbodegon.com.mx":
@@ -642,7 +642,8 @@ class MudiExperience{
         this.skuNumber      = this.skuNumber.innerHTML;
         client == 'marina' ? (
             this.category       = this.category.childNodes[2].innerHTML ,
-            this.subCategory    = this.subCategory.childNodes[3].innerHTML
+            this.subCategory    = this.subCategory.childNodes[3].innerHTML,
+            this.addToCar       = this.addToCar.parentNode.parentNode.parentNode
         ) : (
             this.category       = this.category[2].innerHTML ,
             this.subCategory    = this.subCategory[3].innerHTML
