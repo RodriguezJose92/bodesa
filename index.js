@@ -576,8 +576,8 @@ class MudiExperience{
             event: `Evento de interaccion ${eventName}`,
             valorMudi: 1,
             sku: this.skuNumber,
-            category:document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML || 'null',
-            subCategory: document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML || ' null',
+            category:this.category,
+            subCategory: this.subCategory,
             sistemaOperativo: OSdevice
         })
     };
@@ -673,7 +673,6 @@ class MudiExperience{
     };
 
 };
-
 
 const mudiExperience = new MudiExperience();
 mudiExperience.experienceOn()
