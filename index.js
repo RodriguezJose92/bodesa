@@ -305,6 +305,7 @@ class MudiExperience{
         this.subCategory        = null;
 
         this.flagTesting        = true;
+        this.timeVerify         = 0;
     };
 
     /** Conect mudiServer  ✔️ */
@@ -629,10 +630,15 @@ class MudiExperience{
 
         };
 
-        if( !this.skuNumber && !this.fatherContainer && !this.category && this.subCategory && !this.addToCar ){
-            requestAnimationFrame(this.experienceOn.bind(this));
+        if(this.timeVerify>1000){
+            console.log('outMudi')
             return;
-        };
+        }
+        else if( !this.skuNumber && !this.fatherContainer && !this.category && this.subCategory && !this.addToCar ){
+            this.timeVerify ++
+            requestAnimationFrame(this.experienceOn.bind(this));
+        }
+        
 
         this.skuNumber      = this.skuNumber.innerHTML;
         this.category       = this.category.innerHTML;
