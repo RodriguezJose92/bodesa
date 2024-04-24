@@ -247,4 +247,16 @@
         filter: drop-shadow(3px 5px 5px rgba(10, 10, 10, 0.196));
         transform: scale(0.85);
     }
+
+    .iframeMudi3D {
+        width: 90%;
+    }
+
+    .cls-2_modal tspan {
+        font-size: 20px;
+    }
+
+    .imgBtnAR {
+        width: 150px;
+    }
 }
