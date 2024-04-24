@@ -657,7 +657,7 @@ class MudiExperience{
         this.flagTesting && mudiData.pixelOn(this.skuNumber);
         this.flagTesting && mudiData.eventView();
         this.flagTesting && mudiData.getCategory(this.category);
-        this.flagTesting && mudiData.subCategory(this.subCategory);
+        this.flagTesting && mudiData.getSubCategory(this.subCategory);
 
         /** Viewer event GTM  */
         this.flagTesting && this.sendEventViewer();
