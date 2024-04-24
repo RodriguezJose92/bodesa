@@ -1,15 +1,310 @@
+/** TEST A-B */
+class sendData{  
+
+    constructor(){
+        
+        /** Atributes Change */
+        this.testType           = "N/A";  // ✔️
+        this.viewer             = 0;     
+        this.interaction3D      = 0;
+        this.interactionAR      = 0;
+        this.addToCar           = null;  // ✔️
+        this.timeInSesion       = null;  // ✔️
+
+        /** Get only time */
+        this.idCompany          = 413;
+        this.sku                = null;  // ✔️
+        this.category           = null;  // ✔️
+        this.subCategory        = null;  // ✔️
+        this.pathURL            = null;  // ✔️
+        this.domain             = null;
+        this.date               = null;  // ✔️
+        this.infodevice         = null;  // ✔️
+        
+    };
+
+    /** Consult last type test ✔️ */
+    async consultTest(){
+
+        /** verify userMark */
+        if(localStorage.getItem('UserMudiTest')) {
+            this.testType = localStorage.getItem('UserMudiTest');
+            return
+        };
+
+        /** when the new user in, mark him */
+        let body = {"idCompany": this.idCompany};
+
+        const 
+        consult  =  await fetch('https://viewer.mudi.com.co:3589/api/mudiv1/getInfoTest',{
+            method:'Post',
+            headers:{"Content-type":"application/json"},
+            body: JSON.stringify(body)
+        })
+
+        /** Update lastTest */
+        const 
+        response = await consult.json();
+        await this.updateTest(response.data[0].test)
+    };
+
+    /** Update testActual  ✔️ --> Se puede revisar máaaaaaas a profundidad */
+    async updateTest(lastTest){
+
+        /** Modify testType DataBase */
+        let testUpdate;
+        lastTest == 'A' ? testUpdate = 'B' : testUpdate = 'A';
+
+        /** Body */
+        let body = {"idCompany":"147" , "typeTest":`${testUpdate}`};
+
+        /** Request */
+        const 
+        consult  =  await fetch('https://viewer.mudi.com.co:3589/api/mudiv1/updateInfoTest',{
+            method:'Post',
+            headers:{"Content-type":"application/json"},
+            body: JSON.stringify(body)
+        });
+
+        // markUser here in localStorage
+        this.testType=testUpdate;
+        localStorage.setItem('UserMudiTest',testUpdate)
+    };
+
+    /** Recognize 
+            HELP TO RECOGNIZE TYPE OF DEVICE  & INFO DEVICE 
+            Android device: manufacturer & Model
+            IOS : "Apple" & IOS version ✔️
+    */
+    recognizeDevice(){
+
+        /** Define Structure Response */
+        let response = {
+            Device: null ,
+            type: `Mobile`
+        };
+        
+        const 
+        userAgent   = navigator.userAgent,
+        listUA      = userAgent.split(" ");
+
+        /** Better use REGEX ❌ Add TO DO */
+
+        /** OS Android  */
+            if(userAgent.toLowerCase().includes('android')){
+                let androidVersion  = listUA[2] + ' ' + listUA[3];
+                let androidModel    = listUA[4] + ' ' + listUA[5];
+                response.Device = `Android ${androidModel} V-${androidVersion}`;
+            }
+
+        /** IOS */
+            else if (userAgent.toLowerCase().includes('iphone'))    
+                response.Device = `iPhone OS ${listUA[5].split('_').join('.')}`;
+            else if (userAgent.toLowerCase().includes('ipad'))      
+                response.Device = `iPad OS ${listUA[5].split('_').join('.')}`;
+            else if (userAgent.toLowerCase().includes('Macintosh')) 
+                response.Device = `Macintosh OS ${listUA[6].split('_').join('.')}`;
+            
+        /** Window */
+            else if (listUA[1].toLowerCase().includes('windows')){   
+                response.Device = `Windows V- ${listUA[3].replace(";", " ")} ${listUA[4].replace(";", " ")}`;
+                response.type = `Desk`
+            }
+
+        /** Linux */
+            else if (userAgent.toLowerCase().includes('linux') && !userAgent.toLowerCase().includes('android')){
+                response.Device = `Linux`; 
+                response.type   = `Desk`;
+            }
+
+        /** Unknowled */
+            else {
+                response.Device = "Desconocido"
+                response.type   = null;
+            };
+
+        this.infodevice = response;
+    };
+
+    /** Get Date ✔️ FORMAT DATETIME AAAA-MM-DD HH:MM:SS  */
+    getDate(){
+
+        /** Build Date */
+        const dateActual = new Date();
+
+        /** Build information */
+        let dateInfo = {
+            month           : dateActual.getMonth() + 1,
+            day             : dateActual.getDate(),
+            year            : dateActual.getFullYear(),
+            hour            : dateActual.getHours(),
+            minute          : dateActual.getMinutes(),
+            seconds         : dateActual.getSeconds()  
+        };
+
+        /** Build Date Sesion  dd -- mm -- aa -- ||  hh -- mm -- ss */
+        this.date = `${dateInfo.year}-${dateInfo.month<10 ? '0'+ dateInfo.month : dateInfo.month}-${dateInfo.day} ${dateInfo.hour<10 ? '0'+dateInfo.hour : dateInfo.hour}:${dateInfo.minute}:${dateInfo.seconds}`;
+    };
+
+    /** GET PATH URL AND Domain ✔️ */
+    getPathURL(){
+        this.pathURL = window.location.pathname;
+        this.domain  = location.hostname.split('.')[1]
+    };
+
+    /** Event viewer */
+    eventView(){
+        this.viewer == 0 && (this.viewer++)
+    };
+
+    /** Event Mudi interaction 3D AR  */
+    eventsMudi3D(){this.interaction3D ++};
+    eventsMudiAR(){this.interactionAR ++};
+
+    /** Event add to car */
+    eventAddToCar(){
+        /** Verifying btn Add to Car */
+        let btnAddToCar =  document.body.querySelector('.cart-add')
+        if(!btnAddToCar){ requestAnimationFrame(this.eventAddToCar.bind(this)) }
+        else{ btnAddToCar.addEventListener('click',()=> this.addToCar++ ) }
+    };
+
+    /** Timing in Sesion  ✔️*/
+    timeSesion(){
+
+        /** Configaration Time */
+        let time = {
+            hour: 0,
+            minutes: 0,
+            seconds: 0
+        };
+    
+        setInterval(() => {
+    
+            /**up one Sec */
+            time.seconds++;
+    
+            /** verify Secs */
+            if (time.seconds < 10) {
+                time.seconds = `0${time.seconds}`
+                time.minutes == 0 && (time.minutes = '00')
+                time.hour == 0 && (time.hour = '00')
+            }
+    
+            /** VerifyMinutes */
+            if (time.seconds == 60) {
+                time.seconds = '00';
+                time.minutes++;
+                time.minutes < 10 ? time.minutes = `0${time.minutes}` : time.minutes = `${time.minutes}`;
+            }
+    
+            /** Verify hours */
+            if (time.minutes == 60) {
+                time.minutes = '00';
+                time.hour++;
+                time.hour < 10 ? time.hour = `0${time.hour}` : time.hour = `${time.hour}`;
+            }
+    
+            this.timeInSesion = `${time.hour}:${time.minutes}:${time.seconds}`;
+    
+        }, 1000);
+    };
+
+    /** Get sku  */
+    getSkuNumer(sku){this.sku = sku};
+
+    /** Get Category -- Programar por clientee */
+    getCategory(category){ this.category = category};
+
+    /** Get subCategory -- programar por cliente */
+    getSubCategory(subCategory){this.subCategory = subCategory};
+
+    /** Pixel Mudi ON */
+    async pixelOn(skunumber){
+
+        let beforeUnloaded =  window.addEventListener('beforeunload', (e)=>{
+            debugger
+           this.sendDataMudiServer();
+       } , false);
+        
+        /** verify Result typeTest */
+        this.testType && (
+
+            /** ✔️ get PathName */
+            this.getPathURL(),
+
+            this.getSkuNumer(skunumber),
+
+            /** Event add To car */
+            this.eventAddToCar(),
+
+            /** ✔️ getDate */
+            this.getDate(),
+
+            /** ✔️get Device */
+            this.recognizeDevice(),
+
+            /** ✔️Listener sendData Mudi */
+            beforeUnloaded
+
+        );
+    };
+
+    /** sendData MudiSever */
+    async sendDataMudiServer(){
+        
+        /** Build Body */
+        let body = {
+            "testType"          : this.testType,
+            "viewer"            : this.viewer,
+            "interaction3D"     : this.interaction3D,
+            "interactionAR"     : this.interactionAR,
+            "addToCar"          : this.addToCar,
+            "idCompany"         : this.idCompany,
+            "timeInSesion"      : this.timeInSesion,
+            "sku"               : this.sku,
+            "category"          : this.category,
+            "subCategory"       : this.subCategory,
+            "pathURL"           : this.pathURL,
+            "dates"             : this.date,
+            "device"            : this.infodevice.type,
+            "deviceDescription" : this.infodevice.Device,
+            "domain"            : this.domain
+        };
+        
+        console.log(body)
+        debugger;
+
+        /** Doing request */
+        try {
+            const request = await fetch('https://viewer.mudi.com.co:3589/api/mudiv1/sendRegistry',{
+                method:'POST',
+                headers:{"Content-type":"application/json"},
+                body:JSON.stringify(body)
+            })
+            const response = await request.json();
+        } catch (error) {
+            console.log(`Mudi Error:` + error)
+        };
+    };
+
+};
+const mudiData = new sendData();
+/** ✔️ start timer Mudi */
+mudiData.timeSesion();
+
+/** Mudi Experience */
 class MudiExperience{
 
     constructor(){
-        this.typeTesting        = null;
-        this.color              = null;
+        this.color              = "#03457c";
         this.dataSever          = null;
         this.skuNumber          = null;
         this.fatherContainer    = null;
-        this.categories         = null;
+        this.category           = null;
+        this.subCategory        = null;
 
-        this.addToCar           = null;
-        this.buyItem            = null;
+        this.flagTesting        = true;
     };
 
     /** Conect mudiServer  ✔️ */
@@ -72,7 +367,7 @@ class MudiExperience{
                 <defs>
                     <style>
                         .cls-1{
-                            fill:${this.color};
+                            fill:${this.color} !important;
                             opacity:.6;
                         }
                         
@@ -83,7 +378,7 @@ class MudiExperience{
                             fill:#f4f4f4;
                         }
                         .cls-3{
-                            fill:${this.color};
+                            fill:${this.color} !important;
                         }
                     </style>
                 </defs>
@@ -98,13 +393,16 @@ class MudiExperience{
 
         containerBtns.querySelector('#img3DBtn').addEventListener('click',()=>{
             this.createModal();
+            /** Pixel Mudi */
+            mudiData.eventsMudi3D();
+            /** GTM */
             this.sendEventInteraction('3D');
-        })
+        });
 
-        fragment.appendChild(containerBtns);
+        fragment.appendChild(containerBtns)
 
         /** Add DOM */
-        this.fatherContainer.appendChild(fragment);
+        this.fatherContainer.appendChild(fragment)
     };
 
     /** Create Modal ✔️ */
@@ -127,7 +425,8 @@ class MudiExperience{
                     <defs>
                         <style>
                         .cls-1_modal{fill:${this.color};stroke:${this.color};stroke-miterlimit:10;stroke-width:3px;}
-                        .cls-2_modal{font-family:FrutigerBold, Frutiger;font-size:19.04px;fill:white}
+                        .cls-2_modal{font-family:FrutigerBold, Frutiger;fill:white}
+                        .cls-2_modal tspan{ font-size:17px}
                         .cls-3_modal{stroke-width:0px;fill:white;}
                         </style>
                     </defs>
@@ -208,6 +507,8 @@ class MudiExperience{
             if(window.innerWidth>1000){
                 !flagAR 
                 ? (
+                    /** Event pixel Mudi */
+                    mudiData.eventsMudiAR(),
                     document.body.querySelector('.containerQRMudi').style.right="15%",
                     changeStyleBtnAR(flagAR,this.color),
                     flagAR = !flagAR
@@ -218,7 +519,10 @@ class MudiExperience{
                     flagAR = !flagAR
                 )
             }
-            else window.open(`${this.dataServer.URL_AR}`,"_BLANK");
+            else {
+                mudiData.eventsMudiAR();
+                window.open(`${this.dataServer.URL_AR}`,"_BLANK");
+            } 
             flagAR && this.sendEventInteraction('AR')
         });
 
@@ -245,16 +549,15 @@ class MudiExperience{
 
     /** create tooltip ✔️ */
     createTooltip(){
-
         const 
         tooltip = document.createElement('P');
         tooltip.classList.add('tooltipMudi');
-        tooltip.setAttribute("style",`background-color:${this.color}`)
+        tooltip.setAttribute('style',`background-color:${this.color}`)
         tooltip.innerHTML=`<b>¡Nuevo!</b> Descubre como se ve este producto en 3D y realidad aumentada en tu espacio`;
 
         setTimeout(()=>{
             document.body.querySelector('.tooltipMudi').remove();
-        },9000);
+        },9000)
 
         return tooltip;
     };
@@ -268,113 +571,97 @@ class MudiExperience{
         else if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad')) OSdevice = "IOS";
         else OSdevice = 'DESK';
 
-        dataLayer.push({
-            event           : `Evento de interaccion ${eventName}`,
-            valorMudi       : 1,
-            sku             : this.skuNumber,
-            category        : window.location.hostname.includes('marina') 
-                                    ? this.categories[this.categories.length -3 ].innerText ?? 'null'
-                                    : this.categories[this.categories.length -1 ].innerText ?? 'null',
-            subCategory     : window.location.hostname.includes('marina') 
-                                    ? this.categories[this.categories.length -4 ].innerText ?? 'null'
-                                    : this.categories[this.categories.length -2 ].innerText ?? 'null',
+        window.dataLayer && dataLayer.push({
+            event: `Evento de interaccion ${eventName}`,
+            valorMudi: 1,
+            sku: this.skuNumber,
+            category:document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML || 'null',
+            subCategory: document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML || ' null',
+            sistemaOperativo: OSdevice
+        })
+    };
+
+    /** viewer event Mudi GTM  */
+    sendEventViewer(){
+        let OSdevice;
+
+        if (navigator.userAgent.includes('Android')) OSdevice = 'Android';
+        else if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad')) OSdevice = "IOS";
+        else OSdevice = 'DESK';
+
+        window.dataLayer && dataLayer.push({
+            event: `visualizacion_botones`,
+            valorMudi: 1,
+            sku: this.skuNumber,
+            category: this.category,
+            subCategory: this.subCategory,
             sistemaOperativo: OSdevice
         });
 
     };
 
-    /** Verificación del DOM  ✔️*/
-    veryfyDOM(){
-        if( this.fatherContainer )  return true
-        else                        return false;
-    };
-
     /** verifyExperience  ✔️ */
     async experienceOn(){
 
-        // Guardamos el  SKU
-        let mySku = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value');
+        switch(location.hostname){
+            case "mudi--lamarinamx.myvtex.com":
+            case "www.lamarina.com.mx":
+                this.skuNumber              = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML
+                this.color                  = "#006239";
+                this.fatherContainer        = document.body.querySelector('.lamarinamx-marina-components-0-x-containerLayout--pdp-images__container')
+                this.category               = document.body.querySelector("[data-testid='breadcrumb']").childNodes[2].innerHTML;
+                this.subCategory            = document.body.querySelector("[data-testid='breadcrumb']").childNodes[3].innerHTML;
+                this.addToCar               = document.body.querySelector('.vtex-add-to-cart-button-0-x-buttonText').parentNode.parentNode.parentNode ?? null ;
+                break
+            
+            case "www.elbodegon.com.mx":
+                this.skuNumber              = document.body.querySelector('.skuReference').innerHTML
+                this.color                  = "#db0b14";
+                this.fatherContainer        = document.body.querySelector('.product-page-images');
+                this.category               = document.body.querySelectorAll('[itemprop="name"]')[2].innerHTML;
+                this.subCategory            = document.body.querySelectorAll('[itemprop="name"]')[3].innerHTML;
+                this.addToCar               = document.body.querySelector('[href="/checkout/cart/add?sku=1331422&qty=1&seller=1&redirect=true&sc=1"]')
+                break;
 
-        if(!mySku){
-            requestAnimationFrame(this.experienceOn.bind());
+        };
+
+        if( !this.skuNumber && !this.fatherContainer && !this.category && this.subCategory && !this.addToCar ){
+            requestAnimationFrame(this.experienceOn.bind(this));
             return;
         };
+        
+        /** Response Mudi server */
+        await this.conectServer(this.skuNumber);
 
-        /** Assign skuNumber */
-        this.skuNumber = mySku.innerHTML;
-
-        //** Asignamos el color y contenedor padre */
-        if(this.color === null || this.fatherContainer == null){
-            switch( window.location.hostname ){
-
-                case "www.elbodegon.com.mx":
-                    this.color                  = "#db0b14";
-                    this.fatherContainer        = document.body.querySelector('.product-page-images');
-                    this.categories             = document.body.querySelectorAll('[itemprop="name"]') || null;
-                    this.addToCar               = null
-                    break;
-
-                case "mudi--lamarinamx.myvtex.com":
-                    this.color                  = "#006239";
-                    this.fatherContainer        = document.body.querySelector('.lamarinamx-marina-components-0-x-containerLayout--pdp-images__container')
-                    this.categories             = document.body.querySelector("[data-testid='breadcrumb']").childNodes || null;
-                    this.addToCar               = document.body.querySelector('.vtex-add-to-cart-button-0-x-buttonText').parentNode.parentNode.parentNode ?? null ;
-                    break;
-
-                case "127.0.0.1":
-                    this.color                  = "#db0b14";
-                    this.fatherContainer        = document.body.querySelector('#deployMudi')
-                    break;
-
-            };
-        };
-
-        /** Verificamos si el Dom está disponible */
-        if(this.veryfyDOM){
-
-            /** Response Mudi server */
-            await this.conectServer(this.skuNumber);
-
-            /** verify process */
-            if (!this.dataServer){
-                document.body.querySelector('.btnsMudiContainer') && document.body.querySelector('.btnsMudiContainer').remove();
-                console.warn(`El sku: ${this.skuNumber} no posee experiencias de 3D  y AR`)
-                return;
-            };
-
-            /** Create Styles */
-            this.createStyles();
-
-            /** Create Buttons */
-            this.createBtns();
-
-            /** Enviamos el evento devisualización */
-            this.categories && dataLayer.push({
-                event           : "visualizacion_botones",
-                valorMudi       : "1",
-                sku             : this.skuNumber,
-                category        : window.location.hostname.includes('marina') 
-                                    ? this.categories[this.categories.length -3 ].innerText ?? 'null'
-                                    : this.categories[this.categories.length -1 ].innerText ?? 'null',
-                subCategory     : window.location.hostname.includes('marina') 
-                                    ? this.categories[this.categories.length -4 ].innerText ?? 'null'
-                                    : this.categories[this.categories.length -2 ].innerText ?? 'null',
-            });
-
+        /** verify process */
+        if (!this.dataServer){
+            document.body.querySelector('.btnsMudiContainer') && document.body.querySelector('.btnsMudiContainer').remove();
+            console.warn(`El sku: ${this.skuNumber} no posee experiencias de 3D  y AR`)
+            return;
         }
 
-        /** Volvemos hacer la petición si es que el Dom aún no está listp */
-        else { requestAnimationFrame(this.experienceOn.bind()) }
+        /** Create Styles */
+        this.createStyles();
+        /** Create Buttons */
+        this.createBtns();
 
-    }; 
+        /** get info PIXEL MUDI */
+        this.flagTesting && mudiData.pixelOn(this.skuNumber);
+        this.flagTesting && mudiData.eventView();
+        this.flagTesting && mudiData.getCategory(this.category);
+        this.flagTesting && mudiData.subCategory(this.subCategory);
+
+        /** Viewer event GTM  */
+        this.flagTesting && this.sendEventViewer();
+
+        this.flagTesting = false;
+        
+    };
 
 };
 
-const 
-mudiExperience = new MudiExperience();
-setTimeout(()=>{
-    mudiExperience.experienceOn();
-    console.log('Hemos iniciado la experiencia')
-},2000)
+
+const mudiExperience = new MudiExperience();
+mudiExperience.experienceOn()
 
 
