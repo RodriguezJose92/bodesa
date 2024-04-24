@@ -682,8 +682,7 @@ class MudiExperience{
 const mudiExperience = new MudiExperience();
 setTimeout(()=>{
     mudiExperience.experienceOn()
-},2000)
+},5000)
 
-console.log('Prueba de renderización')
 
 
