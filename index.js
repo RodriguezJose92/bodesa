@@ -223,7 +223,7 @@ class sendData{
     async pixelOn(skunumber){
 
         let beforeUnloaded =  window.addEventListener('beforeunload', (e)=>{
-            debugger
+            
            this.sendDataMudiServer();
        } , false);
         
@@ -273,7 +273,7 @@ class sendData{
         };
         
         console.log(body)
-        debugger;
+        ;
 
         /** Doing request */
         try {
@@ -613,8 +613,8 @@ class MudiExperience{
                 this.skuNumber              = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value');
                 this.color                  = "#006239";
                 this.fatherContainer        = document.body.querySelector('.lamarinamx-marina-components-0-x-containerLayout--pdp-images__container');
-                this.category               = document.body.querySelector("[data-testid='breadcrumb']").childNodes[2];
-                this.subCategory            = document.body.querySelector("[data-testid='breadcrumb']").childNodes[3];
+                this.category               = document.body.querySelector("[data-testid='breadcrumb']");
+                this.subCategory            = document.body.querySelector("[data-testid='breadcrumb']");
                 this.addToCar               = document.body.querySelector('.vtex-add-to-cart-button-0-x-buttonText').parentNode.parentNode.parentNode;
                 break
             
@@ -623,8 +623,8 @@ class MudiExperience{
                 this.skuNumber              = document.body.querySelector('.skuReference')
                 this.color                  = "#db0b14";
                 this.fatherContainer        = document.body.querySelector('.product-page-images');
-                this.category               = document.body.querySelectorAll('[itemprop="name"]')[2];
-                this.subCategory            = document.body.querySelectorAll('[itemprop="name"]')[3];
+                this.category               = document.body.querySelectorAll('[itemprop="name"]');
+                this.subCategory            = document.body.querySelectorAll('[itemprop="name"]');
                 this.addToCar               = document.body.querySelector('[href="/checkout/cart/add?sku=1331422&qty=1&seller=1&redirect=true&sc=1"]')
                 break;
 
@@ -639,10 +639,14 @@ class MudiExperience{
             requestAnimationFrame(this.experienceOn.bind(this));
         }
         
-
         this.skuNumber      = this.skuNumber.innerHTML;
-        this.category       = this.category.innerHTML;
-        this.subCategory    = this.subCategory.innerHTML
+        client == 'marina' ? (
+            this.category       = this.category.childNodes[2].innerHTML ,
+            this.subCategory    = this.subCategory.childNodes[3].innerHTML
+        ) : (
+            this.category       = this.category[2].innerHTML ,
+            this.subCategory    = this.subCategory[3].innerHTML
+        );        
         
         /** Response Mudi server */
         await this.conectServer(this.skuNumber);
