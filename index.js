@@ -684,4 +684,6 @@ setTimeout(()=>{
     mudiExperience.experienceOn()
 },2000)
 
+console.log('Prueba de renderización')
+
 
