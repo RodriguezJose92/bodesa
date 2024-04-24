@@ -603,23 +603,27 @@ class MudiExperience{
     /** verifyExperience  ✔️ */
     async experienceOn(){
 
+        let client = null
+
         switch(location.hostname){
             case "mudi--lamarinamx.myvtex.com":
             case "www.lamarina.com.mx":
-                this.skuNumber              = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML
+                client                      = 'marina';
+                this.skuNumber              = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value');
                 this.color                  = "#006239";
-                this.fatherContainer        = document.body.querySelector('.lamarinamx-marina-components-0-x-containerLayout--pdp-images__container')
-                this.category               = document.body.querySelector("[data-testid='breadcrumb']").childNodes[2].innerHTML;
-                this.subCategory            = document.body.querySelector("[data-testid='breadcrumb']").childNodes[3].innerHTML;
-                this.addToCar               = document.body.querySelector('.vtex-add-to-cart-button-0-x-buttonText').parentNode.parentNode.parentNode ?? null ;
+                this.fatherContainer        = document.body.querySelector('.lamarinamx-marina-components-0-x-containerLayout--pdp-images__container');
+                this.category               = document.body.querySelector("[data-testid='breadcrumb']").childNodes[2];
+                this.subCategory            = document.body.querySelector("[data-testid='breadcrumb']").childNodes[3];
+                this.addToCar               = document.body.querySelector('.vtex-add-to-cart-button-0-x-buttonText').parentNode.parentNode.parentNode;
                 break
             
             case "www.elbodegon.com.mx":
-                this.skuNumber              = document.body.querySelector('.skuReference').innerHTML
+                client                      = 'bodegon'
+                this.skuNumber              = document.body.querySelector('.skuReference')
                 this.color                  = "#db0b14";
                 this.fatherContainer        = document.body.querySelector('.product-page-images');
-                this.category               = document.body.querySelectorAll('[itemprop="name"]')[2].innerHTML;
-                this.subCategory            = document.body.querySelectorAll('[itemprop="name"]')[3].innerHTML;
+                this.category               = document.body.querySelectorAll('[itemprop="name"]')[2];
+                this.subCategory            = document.body.querySelectorAll('[itemprop="name"]')[3];
                 this.addToCar               = document.body.querySelector('[href="/checkout/cart/add?sku=1331422&qty=1&seller=1&redirect=true&sc=1"]')
                 break;
 
@@ -629,6 +633,10 @@ class MudiExperience{
             requestAnimationFrame(this.experienceOn.bind(this));
             return;
         };
+
+        this.skuNumber      = this.skuNumber.innerHTML;
+        this.category       = this.category.innerHTML;
+        this.subCategory    = this.subCategory.innerHTML
         
         /** Response Mudi server */
         await this.conectServer(this.skuNumber);
