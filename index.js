@@ -1,4 +1,3 @@
-/** TEST A-B */
 
 if( typeof MudiExperience === "undefined" ){
 
@@ -688,10 +687,9 @@ if( typeof MudiExperience === "undefined" ){
 
     };
 
-    const 
-    mudiExperience = new MudiExperience();
-    mudiExperience.experienceOn();
-    
+    window.mudiExperience = new MudiExperience();
+    window.mudiExperience.experienceOn();
+
 }else console.log('dobleRenderMudi')
 
 
