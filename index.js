@@ -686,20 +686,11 @@ const
 mudiExperience = new MudiExperience();
 mudiExperience.experienceOn();
 
-let mypathActual = window.location.href;
-function verifyPath(){
-    let path = window.location.href;
-    if(mypathActual !== path){
-        mypathActual = window.location.href;
-        mudiExperience.experienceOn();
-        return
-    }
-    console.log(mypathActual)
-    console.log(path)
-    requestAnimationFrame(verifyPath);
-}
-
-verifyPath();
+window.addEventListener('popstate', function(event) {
+    console.log(event)
+    console.log('La URL ha cambiado:', window.location.href);
+    mudiExperience.experienceOn();
+});
 
 
 
