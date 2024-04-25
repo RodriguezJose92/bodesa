@@ -1,5 +1,6 @@
 /** TEST A-B */
-if( typeof senData === "undefined"){
+if( typeof sendData === "undefined"){
+
     class sendData{  
 
         constructor(){
