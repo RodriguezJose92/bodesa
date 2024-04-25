@@ -1,5 +1,5 @@
 /** TEST A-B */
-if( typeof senData === undefined){
+if( typeof senData === "undefined"){
     class sendData{  
 
         constructor(){
@@ -295,7 +295,7 @@ if( typeof senData === undefined){
     mudiData.timeSesion();
 }else console.log('dobleRenderMudi')
 
-if( typeof MudiExperience === undefined ){
+if( typeof MudiExperience === "undefined" ){
     /** Mudi Experience */
 class MudiExperience{
 
