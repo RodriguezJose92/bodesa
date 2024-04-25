@@ -604,7 +604,13 @@ class MudiExperience{
     /** verifyExperience  ✔️ */
     async experienceOn(){
 
-        let client = null
+        /** mudiOut ExpeFailured */
+        if(this.timeVerify>1000){
+            console.log('outMudi')
+            return;
+        }
+
+        let client = null;
 
         switch(location.hostname){
             case "mudi--lamarinamx.myvtex.com":
@@ -630,14 +636,11 @@ class MudiExperience{
 
         };
 
-        if(this.timeVerify>1000){
-            console.log('outMudi')
-            return;
-        }
-        else if( !this.skuNumber && !this.fatherContainer && !this.category && this.subCategory && !this.addToCar ){
+        /** verify Dom Elements */
+        if( !this.skuNumber && !this.fatherContainer && !this.category && this.subCategory && !this.addToCar ){
             this.timeVerify ++
             requestAnimationFrame(this.experienceOn.bind(this));
-        }
+        };
         
         this.skuNumber      = this.skuNumber.innerHTML;
         client == 'marina' ? (
@@ -679,10 +682,23 @@ class MudiExperience{
 
 };
 
-const mudiExperience = new MudiExperience();
-setTimeout(()=>{
-    mudiExperience.experienceOn()
-},5000)
+const 
+mudiExperience = new MudiExperience();
+mudiExperience.experienceOn();
+
+let mypathActual = window.location.href;
+function verifyPath(){
+    let path = window.location.href;
+    if(mypathActual !== path){
+        mypathActual = window.location.href;
+        mudiExperience.experienceOn();
+        return
+    }
+    requestAnimationFrame(verifyPath);
+}
+
+verifyPath();
+
 
 
 
