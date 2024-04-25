@@ -694,6 +694,8 @@ function verifyPath(){
         mudiExperience.experienceOn();
         return
     }
+    console.log(mypathActual)
+    console.log(path)
     requestAnimationFrame(verifyPath);
 }
 
