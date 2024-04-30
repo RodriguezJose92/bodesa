@@ -367,6 +367,9 @@ if( typeof MudiExperience === "undefined" ){
             containerBtns = document.createElement('DIV');
             containerBtns.classList.add('btnsMudiContainer');
             containerBtns.appendChild(this.createTooltip());
+            if(document.body.querySelector('.vtex-product-price-1-x-savings--percentage')){
+                containerBtns.classList.add('botonVentaPosition')
+            }
             containerBtns.innerHTML +=`
             <?xml version="1.0" encoding="UTF-8"?>
                 <svg id="img3DBtn" class="btnMudi3D" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360">
