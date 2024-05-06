@@ -691,7 +691,10 @@ if( typeof MudiExperience === "undefined" ){
     };
 
     window.mudiExperience = new MudiExperience();
-    window.mudiExperience.experienceOn();
+    setTimeout(()=>{
+        window.mudiExperience.experienceOn();
+    },2000)
+    
 
 }else console.log('dobleRenderMudi')
 
