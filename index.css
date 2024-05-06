@@ -240,8 +240,8 @@
 
 @media screen and (max-width:500px) {
     .btnMudi3D {
-        width: 75px;
-        height: 75px;
+        width: 80px;
+        height: 80px;
         position: relative;
         cursor: pointer;
         transition: all .2s ease-in-out;
@@ -279,6 +279,6 @@
 
     .botonVentaPosition {
         top: 7%;
-        right: -4%;
+        right: -2.5%;
     }
 }
