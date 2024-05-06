@@ -695,15 +695,19 @@ if( typeof MudiExperience === "undefined" ){
 
 }else console.log('dobleRenderMudi')
 
-let _location = window.location.href;
+let _location = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML || undefined;
 function verifyURL(){
-    if( _location !== window.location.href ){
-        _location = window.location.href;
+
+    if( !_location ){
+        _location = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML || undefined;
+        requestAnimationFrame(verifyURL);
+        return;
+    }
+
+    if( _location !== document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML ){
+        _location = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML;
         window.mudiExperience.experienceOn();
-        setTimeout(()=>{
-            requestAnimationFrame(verifyURL);
-            console.log('cambiando valor' , window.mudiExperience.skuNumber)
-        },1500)
+        requestAnimationFrame(verifyURL);
     }else{requestAnimationFrame(verifyURL)}
 };
 verifyURL();
