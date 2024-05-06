@@ -18,8 +18,8 @@
 }
 
 .btnMudi3D {
-    width: 80px;
-    height: 80px;
+    width: 65px;
+    height: 65px;
     position: relative;
     cursor: pointer;
     transition: all .2s ease-in-out;
@@ -183,13 +183,13 @@
 }
 
 .hrTitle {
-    margin-botton: 20px
+    margin-bottom: 20px
 }
 
 
 .botonVentaPosition {
     top: 6%;
-    right: -2.5%;
+    right: -1.4%;
 }
 
 @media screen and (min-width:1400px) and (max-width:1700px) {
