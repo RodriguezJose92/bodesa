@@ -702,6 +702,7 @@ function verifyURL(){
         window.mudiExperience.experienceOn();
         setTimeout(()=>{
             requestAnimationFrame(verifyURL);
+            console.log('cambiando valor' , window.mudiExperience.skuNumber)
         },1500)
     }else{requestAnimationFrame(verifyURL)}
 };
