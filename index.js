@@ -695,9 +695,15 @@ if( typeof MudiExperience === "undefined" ){
 
 }else console.log('dobleRenderMudi')
 
-
-
-
+let _location = window.location.href;
+function verifyURL(){
+    if( _location !== window.location.href ){
+        _location = window.location.href;
+        window.mudiExperience.experienceOn();
+        requestAnimationFrame(verifyURL);
+    }else{requestAnimationFrame(verifyURL)}
+};
+verifyURL();
 
 
 
