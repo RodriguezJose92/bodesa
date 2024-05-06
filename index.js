@@ -694,26 +694,28 @@ if( typeof MudiExperience === "undefined" ){
     setTimeout(()=>{
         window.mudiExperience.experienceOn();
     },2000)
+
+    let _location = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML || undefined;
+    function verifyURL(){
+
+        if( !_location ){
+            _location = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML || undefined;
+            requestAnimationFrame(verifyURL);
+            return;
+        }
+
+        if( _location !== document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML ){
+            _location = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML;
+            window.mudiExperience.experienceOn();
+            requestAnimationFrame(verifyURL);
+        }else{requestAnimationFrame(verifyURL)}
+    };
+    verifyURL();
     
 
 }else console.log('dobleRenderMudi')
 
-let _location = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML || undefined;
-function verifyURL(){
 
-    if( !_location ){
-        _location = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML || undefined;
-        requestAnimationFrame(verifyURL);
-        return;
-    }
-
-    if( _location !== document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML ){
-        _location = document.body.querySelector('.vtex-product-identifier-0-x-product-identifier__value').innerHTML;
-        window.mudiExperience.experienceOn();
-        requestAnimationFrame(verifyURL);
-    }else{requestAnimationFrame(verifyURL)}
-};
-verifyURL();
 
 
 
