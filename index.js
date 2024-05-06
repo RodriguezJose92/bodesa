@@ -700,7 +700,9 @@ function verifyURL(){
     if( _location !== window.location.href ){
         _location = window.location.href;
         window.mudiExperience.experienceOn();
-        requestAnimationFrame(verifyURL);
+        setTimeout(()=>{
+            requestAnimationFrame(verifyURL);
+        },1500)
     }else{requestAnimationFrame(verifyURL)}
 };
 verifyURL();
